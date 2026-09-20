@@ -19,6 +19,18 @@ function App() {
 
   const [isAuthOpen, setIsAuthOpen] = useState(false)
 
+  const [currentUser, setCurrentUser] = useState(() => {
+    const savedUser = localStorage.getItem("currentUser")
+    return savedUser ? JSON.parse(savedUser) : null
+  })
+
+  const [users, setUsers] = useState(() => {
+    const savedUsers = localStorage.getItem("users")
+    return savedUsers ? JSON.parse(savedUsers) : []
+  })
+
+  const [isLogIn,setIsLogIn] = useState(false)
+
 
   useEffect(() => {
 
@@ -57,8 +69,8 @@ function App() {
 
   return (
     <div className="App">
-      <Header onloginclick={() => { setIsAuthOpen(true) }} />
-      <AuthModal openAuth={isAuthOpen} onClose={() => { setIsAuthOpen(false) }} />
+      <Header onloginclick={() => { setIsAuthOpen(true) }} currentUser={currentUser} setIsLogIn={setIsLogIn} onLogout = {()=>{setCurrentUser(null); localStorage.removeItem("currentUser");}} />
+      <AuthModal openAuth={isAuthOpen} onClose={() => { setIsAuthOpen(false) }} isLogIn={isLogIn} setIsLogIn={setIsLogIn} users={users} setUsers={setUsers}  setCurrentUser={ setCurrentUser}  />
       <div className='container'>
         <Hero />
 
