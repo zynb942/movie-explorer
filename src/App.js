@@ -4,6 +4,7 @@ import Header from './components/Header';
 import Hero from './components/Hero';
 import AuthModal from './components/AuthModal';
 import initialMovies from './components/api';
+import MovieCard from './components/MovieCard';
 
 function App() {
 
@@ -13,6 +14,7 @@ function App() {
 
   const [category, setCategory] = useState('All')
   const [search, setSearch] = useState('')
+  const [favorites, setFavorites] = useState([])
 
   const [isAuthOpen, setIsAuthOpen] = useState(false)
 
@@ -35,12 +37,20 @@ function App() {
 
   }, [])
 
+  const toggleFav = (movie) => {
+    const isfav = favorites.some((fav) => fav.id === movie.id)
+    if (isfav) { favorites.filter((fav) => fav.id !== movie.id) }
+    else {
+      setFavorites([...favorites, movie])
+    }
+  }
 
-  const filteredMovies = initialMovies.filter((movie) => {
+
+  const filteredMovies = movies.filter((movie) => {
     const matchCategory = category === 'All' || movie.genre === category;
-    const matchSearch = movie.title.toLowerCase.includes(search.toLowerCase) ||
-      movie.genre.toLowerCase.includes(search.toLowerCase)
-    return matchCategory && matchSearch          
+    const matchSearch = movie.title.toLowerCase().includes(search.toLowerCase()) ||
+      movie.genre.toLowerCase().includes(search.toLowerCase())
+    return matchCategory && matchSearch
   })
 
 
@@ -69,6 +79,15 @@ function App() {
         {loading && <div style={{ textAlign: 'center', padding: '40px' }}>Loading movies...</div>}
 
         {error && <div style={{ color: '#ff4d4d', textAlign: 'center', padding: '40px' }}>{error}</div>}
+
+        <div className="recipes-grid movies-grid">
+          {filteredMovies.map((movie) => {
+            return (
+              <MovieCard key={movie.id} movie={movie} isFav={favorites.some((f) => f.id === movie.id)} onToggleFav={toggleFav} />
+            )
+          })}
+
+        </div>
 
 
       </div>
