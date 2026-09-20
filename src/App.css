@@ -317,3 +317,21 @@ header {
       font-size: 13px;
       color: var(--text-muted);
     }
+
+    /* Footer Styles */
+
+    footer {
+      border-top: 1px solid var(--border-color);
+      padding: 40px 0;
+      color: var(--text-muted);
+      font-size: 14px;
+      margin-top: 40px;
+    }
+    .footer-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+

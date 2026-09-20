@@ -5,6 +5,7 @@ import Hero from './components/Hero';
 import AuthModal from './components/AuthModal';
 import initialMovies from './components/api';
 import MovieCard from './components/MovieCard';
+import Footer from './components/Footer';
 
 function App() {
 
@@ -92,6 +93,7 @@ function App() {
 
       </div>
 
+      <Footer />
 
     </div>
   );
