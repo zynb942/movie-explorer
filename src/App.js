@@ -6,6 +6,7 @@ import AuthModal from './components/AuthModal';
 import initialMovies from './components/api';
 import MovieCard from './components/MovieCard';
 import Footer from './components/Footer';
+import MovieDetailsModal from './components/MovieDetailsModal';
 
 function App() {
 
@@ -18,6 +19,7 @@ function App() {
   const [favorites, setFavorites] = useState([])
 
   const [isAuthOpen, setIsAuthOpen] = useState(false)
+  const [selectedMovie,setSelectedMovie] = useState(null)
 
   const [currentUser, setCurrentUser] = useState(() => {
     const savedUser = localStorage.getItem("currentUser")
@@ -52,7 +54,7 @@ function App() {
 
   const toggleFav = (movie) => {
     const isfav = favorites.some((fav) => fav.id === movie.id)
-    if (isfav) { favorites.filter((fav) => fav.id !== movie.id) }
+    if (isfav) {setFavorites( favorites.filter((fav) => fav.id !== movie.id)) }
     else {
       setFavorites([...favorites, movie])
     }
@@ -96,7 +98,7 @@ function App() {
         <div className="recipes-grid movies-grid">
           {filteredMovies.map((movie) => {
             return (
-              <MovieCard key={movie.id} movie={movie} isFav={favorites.some((f) => f.id === movie.id)} onToggleFav={toggleFav} />
+              <MovieCard key={movie.id} movie={movie} isFav={favorites.some((f) => f.id === movie.id)} onToggleFav={toggleFav} setSelectedMovie={setSelectedMovie} />
             )
           })}
 
@@ -106,6 +108,11 @@ function App() {
       </div>
 
       <Footer />
+
+      {selectedMovie && 
+      <MovieDetailsModal selectedMovie={selectedMovie} onClose={()=>setSelectedMovie(null)} 
+      isFav={favorites.some((fav)=>fav.id === selectedMovie.id)} onToggleFav={toggleFav} />
+      }
 
     </div>
   );
