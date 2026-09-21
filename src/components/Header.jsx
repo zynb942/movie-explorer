@@ -2,7 +2,7 @@
 import '../App.css';
 
 
-function Header({ onloginclick, currentUser , setIsLogIn , onLogout }) {
+function Header({ onloginclick, currentUser , setIsLogIn , onLogout , openFavorites , favCount}) {
     return (
         <header>
             <h2 className='logo'>🎬 CineStream</h2>
@@ -10,7 +10,7 @@ function Header({ onloginclick, currentUser , setIsLogIn , onLogout }) {
                 {currentUser ? (
                     <>
                         <span className='username'>Welcome, {currentUser.userName}</span>
-                        <button className="btn btn-outline">Favorites</button>
+                        <button className="btn btn-outline" onClick={openFavorites} >Favorites <span className="badge">{favCount}</span></button>
                         <button className="btn btn-primary" onClick={onLogout}>Logout</button>
                     </>
                 ) : (

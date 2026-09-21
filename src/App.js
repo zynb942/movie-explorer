@@ -7,6 +7,7 @@ import initialMovies from './components/api';
 import MovieCard from './components/MovieCard';
 import Footer from './components/Footer';
 import MovieDetailsModal from './components/MovieDetailsModal';
+import FavoriteDrawer from './components/FavoriteDrawer';
 
 function App() {
 
@@ -19,7 +20,8 @@ function App() {
   const [favorites, setFavorites] = useState([])
 
   const [isAuthOpen, setIsAuthOpen] = useState(false)
-  const [selectedMovie,setSelectedMovie] = useState(null)
+  const [selectedMovie, setSelectedMovie] = useState(null)
+  const [showFavorites, setShowFavorites] = useState(false)
 
   const [currentUser, setCurrentUser] = useState(() => {
     const savedUser = localStorage.getItem("currentUser")
@@ -31,7 +33,7 @@ function App() {
     return savedUsers ? JSON.parse(savedUsers) : []
   })
 
-  const [isLogIn,setIsLogIn] = useState(false)
+  const [isLogIn, setIsLogIn] = useState(false)
 
 
   useEffect(() => {
@@ -54,12 +56,12 @@ function App() {
 
   const toggleFav = (movie) => {
     const isfav = favorites.some((fav) => fav.id === movie.id)
-    if (isfav) {setFavorites( favorites.filter((fav) => fav.id !== movie.id)) }
+    if (isfav) { setFavorites(favorites.filter((fav) => fav.id !== movie.id)) }
     else {
       setFavorites([...favorites, movie])
     }
   }
-
+  { console.log(favorites) }
 
   const filteredMovies = movies.filter((movie) => {
     const matchCategory = category === 'All' || movie.genre === category;
@@ -71,8 +73,8 @@ function App() {
 
   return (
     <div className="App">
-      <Header onloginclick={() => { setIsAuthOpen(true) }} currentUser={currentUser} setIsLogIn={setIsLogIn} onLogout = {()=>{setCurrentUser(null); localStorage.removeItem("currentUser");}} />
-      <AuthModal openAuth={isAuthOpen} onClose={() => { setIsAuthOpen(false) }} isLogIn={isLogIn} setIsLogIn={setIsLogIn} users={users} setUsers={setUsers}  setCurrentUser={ setCurrentUser}  />
+      <Header onloginclick={() => { setIsAuthOpen(true) }} currentUser={currentUser} setIsLogIn={setIsLogIn} onLogout={() => { setCurrentUser(null); localStorage.removeItem("currentUser"); }} openFavorites={() => setShowFavorites(true)} favCount={favorites.length} />
+      <AuthModal openAuth={isAuthOpen} onClose={() => { setIsAuthOpen(false) }} isLogIn={isLogIn} setIsLogIn={setIsLogIn} users={users} setUsers={setUsers} setCurrentUser={setCurrentUser} />
       <div className='container'>
         <Hero />
 
@@ -109,9 +111,13 @@ function App() {
 
       <Footer />
 
-      {selectedMovie && 
-      <MovieDetailsModal selectedMovie={selectedMovie} onClose={()=>setSelectedMovie(null)} 
-      isFav={favorites.some((fav)=>fav.id === selectedMovie.id)} onToggleFav={toggleFav} />
+      {selectedMovie &&
+        <MovieDetailsModal selectedMovie={selectedMovie} onClose={() => setSelectedMovie(null)}
+          isFav={favorites.some((fav) => fav.id === selectedMovie.id)} onToggleFav={toggleFav} />
+      }
+
+      {showFavorites &&
+        <FavoriteDrawer favorites={favorites} onClose={() => setShowFavorites(false)} onRemove={toggleFav} onSelect={setSelectedMovie} />
       }
 
     </div>

@@ -3,7 +3,7 @@ import '../App.css';
 
 function MovieDetailsModal({selectedMovie, onClose, isFav, onToggleFav}) {
     return (
-        <div className='modal-overlay'>
+        <div className='modal-overlay' onClick={onClose}>
             <div className='modal' onClick={(e) => e.stopPropagation()}>
                 <button className="modal-close" onClick={onClose}>✕</button>
                 <img className='modal-banner' src={selectedMovie.image} alt={selectedMovie.title} />
